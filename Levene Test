@@ -1,0 +1,21 @@
+#Read an Excel file into a pandas DataFrame.
+BW=pd.read_excel('SUMMARYDATA_SVA3_NTS-GABA project.xlsx', sheet_name='Body_weight_Onefactor', header=[0], names=None, print(BW)
+
+  #Parameters
+  # BW:Name of data frame
+  # SUMMARYDATA_SVA3_NTS-GABA project.xlsx: DocumentName + .xlsx. Any valid string path is acceptable. 
+  # sheet_name:Strings are used for sheet names. Integers are used in zero-indexed sheet positions. 
+  # header:Row (0-indexed) to use for the column labels of the parsed DataFrame
+  # names:List of column names to use. If file contains no header row, then you should explicitly pass      
+    header=None.
+    
+# Perform Levene test for equal variances.
+from scipy.stats import levene
+a = BW["VehIC_VehIP"] #Define groups to test. 
+b = BW["VehIC_Liraglutide"]
+c = BW["Cocktail_VehIP"]
+d = BW["Cocktail_Liraglutide"] 
+levene(a,b,c,d, center='median')
+
+#Calculate the variance of values
+[np.var(x, ddof=1) for x in [a, b, c,d]]
