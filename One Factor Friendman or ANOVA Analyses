@@ -1,0 +1,37 @@
+import csv
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import pandas as pd
+import scikit_posthocs as sp
+from scipy import stats
+from scipy.stats import norm
+import pingouin
+
+#Read an Excel file into a pandas DataFrame.
+BW=pd.read_excel('SUMMARYDATA_SVA3_NTS-GABA project.xlsx', sheet_name='Body_weight_Onefactor', header=[0], names=None, index_col=0, usecols=[0,1,2,3,4])
+print(BW)
+  #Source and parameters:https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html
+  
+ #Compute the Friedman test for repeated measurements.
+from scipy.stats import friedmanchisquare
+a = BW["VehIC_VehIP"] #Define groups to test.
+b = BW["VehIC_Liraglutide"]
+c = BW["Cocktail_VehIP"]
+d = BW["Cocktail_Liraglutide"]
+friedmanchisquare(a,b,c,d,c)
+  #Source: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.friedmanchisquare.html
+  
+#Calculate pairwise comparisons using Nemenyi post hoc test for unreplicated blocked data.
+scikit_posthocs.posthoc_nemenyi_friedman(BW)
+  #Source:https://scikit-posthocs.readthedocs.io/en/latest/generated/scikit_posthocs.posthoc_nemenyi_friedman/
+  
+  #Obtain mean of each group
+BW.mean(axis='rows')
+  #Source: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html
+  
+  ##Obtain standard error of the mean of each group
+BW.sem(axis='rows')
+  #Source: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sem.html
+  
+  
