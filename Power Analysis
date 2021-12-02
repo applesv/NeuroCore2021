@@ -1,0 +1,3 @@
+#Compute required sample size 
+print('n: %.4f' % pg.power_rm_anova(eta=0.3, m=4, power=0.90, alpha=0.05, epsilon=0.7))
+  #Source:https://pingouin-stats.org/generated/pingouin.power_rm_anova.html
