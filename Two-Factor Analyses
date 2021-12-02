@@ -1,0 +1,32 @@
+import csv
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import pandas as pd
+import scikit_posthocs as sp
+from scipy import stats
+from scipy.stats import norm
+import pingouin as pg
+
+#Read an Excel file into a pandas DataFrame.
+BW2=pd.read_excel('SUMMARYDATA_SVA3_NTS-GABA project.xlsx', sheet_name='Body_weight_Long', header=0, names=['Rat', 'IC', 'IP', 'BW'], index_col=None, usecols=[0,1,2,3])
+
+  #Parameters
+  # BW2:Name of data frame
+  # SUMMARYDATA_SVA3_NTS-GABA project.xlsx: DocumentName + .xlsx. Any valid string path is acceptable. 
+  # sheet_name:Strings are used for sheet names. Integers are used in zero-indexed sheet positions. 
+  # header:Row (0-indexed) to use for the column labels of the parsed DataFrame
+  # names:List of column names to use. If file contains no header row, then you should explicitly pass      
+    header=None.
+    
+#Convert columns to best possible dtypes using dtypes supporting pd.
+BW2.convert_dtypes(infer_objects=True, convert_string=True, convert_integer=True, convert_boolean=True, convert_floating=True) 
+  #Source:https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.convert_dtypes.html
+  
+#Perform two-way repeated measures ANOVA 
+pg.rm_anova(dv='BW', within=['IC', 'IP'], subject='Rat', data=BW2, correction='True', detailed=True, effsize='np2') 
+  #Parameters source:https://pingouin-stats.org/generated/pingouin.rm_anova.html#pingouin.rm_anova
+  
+#Perform pairwise T-tests with the Bonferroni correction
+pg.pairwise_ttests(data=BW2, dv='BW', between=None, within=['IC', 'IP'], subject='Rat', parametric=False, marginal=True, alpha=0.05, alternative='two-sided', padjust='bonf', effsize='eta-square', correction='auto', nan_policy='listwise', return_desc=True, interaction=True)
+  #Soure:https://pingouin-stats.org/generated/pingouin.rm_anova.html#pingouin.rm_anova
